@@ -14,7 +14,6 @@ SVG for CheckBox: [mentioned in the video]
 	></path>
 </svg>
 ```
-
 ## Starter files
 
 
