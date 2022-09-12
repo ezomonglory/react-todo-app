@@ -19,7 +19,6 @@ SVG for CheckBox: [mentioned in the video]
 
 You can find all the starter files in `starter-files` branch. You can to go to the `starter-files` branch and `download zip` the the starter files or You can clone the project and git checkout to `starter-files` branch.
 
-
 ## Getting Started
 
 
