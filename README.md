@@ -3,7 +3,6 @@
 SVG for CheckBox: [mentioned in the video]
 
 
-
 ```html
 <svg viewBox="0 0 53 38" fill="none" xmlns="http://www.w3.org/2000/svg">
 	<path
