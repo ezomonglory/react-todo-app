@@ -71,8 +71,17 @@ function TodoItem({ todo }) {
             >
               {todo.title}
             </p>
+            <p
+              className={getClasses([
+                style.description,
+                todo.status === 'complete' && style['todoText--completed'],
+              ])}
+            >
+              {todo.description}
+            </p>
+
             <p className={style.time}>
-              {format(new Date(todo.time), 'p, MM/dd, yyyy')}
+              {format(new Date(todo.dueDate), 'p, MM/dd, yyyy')}
             </p>
           </div>
         </div>

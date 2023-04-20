@@ -32,20 +32,35 @@ const dropin = {
 
 function TodModel({ type, setOpen, todo }) {
   const [title, setTitle] = useState('');
+  const [description, setdescription] = useState('');
   const [status, setStatus] = useState('incomplete');
+  const [dueDate, setdueDate] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (type === 'update' && todo) {
       setTitle(todo.title);
       setStatus(todo.status);
+      setdescription(todo.description);
+      setdueDate(todo.dueDate);
     } else {
       setTitle('');
       setStatus('incomplete');
+      setdescription('');
+      setdueDate('');
     }
   }, [type, todo, setOpen]);
 
   const handleSubmit = (e) => {
+    console.log(
+      typeof parseInt(dueDate),
+      dueDate,
+      new Date().getMinutes(),
+      new Date(
+        new Date().setMinutes(new Date().getMinutes() + parseInt(dueDate))
+      ).toLocaleString(),
+      new Date().toLocaleString()
+    );
     e.preventDefault();
     if (title === '') {
       toast.error('Please enter a title');
@@ -57,6 +72,10 @@ function TodModel({ type, setOpen, todo }) {
             id: uuid(),
             title,
             status,
+            description,
+            dueDate: new Date(
+              new Date().setMinutes(new Date().getMinutes() + parseInt(dueDate))
+            ).toLocaleString(),
             time: new Date().toLocaleString(),
           })
         );
@@ -64,12 +83,19 @@ function TodModel({ type, setOpen, todo }) {
         setOpen(false);
       }
       if (type === 'update') {
-        if (todo.title !== title || todo.status !== status) {
+        if (
+          todo.title !== title ||
+          todo.status !== status ||
+          todo.description !== description ||
+          todo.dueDate !== dueDate
+        ) {
           dispatch(
             UpdateTodo({
               ...todo,
               title,
               status,
+              description,
+              dueDate,
             })
           );
           toast.success('Task Updated Succesfully');
@@ -122,6 +148,30 @@ function TodModel({ type, setOpen, todo }) {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </label>
+
+            <label htmlFor="description">
+              Description
+              <input
+                type="text"
+                id="description"
+                value={description}
+                onChange={(e) => setdescription(e.target.value)}
+              />
+            </label>
+
+            <label htmlFor="description">
+              Due Date
+              <input
+                type="text"
+                id="dueDate"
+                placeholder="In minutes"
+                value={dueDate}
+                onChange={(e) =>
+                  type === 'update' ? {} : setdueDate(e.target.value)
+                }
+              />
+            </label>
+
             <label htmlFor="status">
               Status
               <select

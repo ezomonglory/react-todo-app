@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <div className="container">
-        <PageTitle> Todo List</PageTitle>
+        <PageTitle> Todo Tracker</PageTitle>
         <div className={style.app__wrapper}>
           <AppHeader />
           <AppContent />

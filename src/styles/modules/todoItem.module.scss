@@ -48,7 +48,7 @@
 }
 .todoText {
 	word-break: break-all;
-	font-weight: 500;
+	font-weight: 900;
 	font-size: 1.4rem;
 	color: var(--black-2);
 
@@ -83,5 +83,17 @@
 	transition: 0.3s ease background-color;
 	&:hover {
 		background-color: var(--gray-2);
+	}
+}
+
+.description{
+    color: rgb(136, 136, 136);
+    word-break: break-all;
+	font-weight: 500;
+	font-size: 1.4rem;	
+
+	&--completed {
+		text-decoration: line-through;
+		opacity: 0.7;
 	}
 }
