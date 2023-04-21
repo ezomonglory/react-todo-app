@@ -43,16 +43,22 @@ function TodModel({ type, setOpen, todo, taskId }) {
     
   const [title, setTitle] = useState('');
   const [description, setdescription] = useState('');
+  const [load, setLoad] = useState(false);
   const [status, setStatus] = useState('to-do');
   const [dueDate, setdueDate] = useState('');
   const dispatch = useDispatch();
 
+  let count;
+
+
   useEffect(() => {
     if (type === 'update' && todo) {
+       
+        console.log(todo.status, todo.due_date)
       setTitle(todo.title);
       setStatus(todo.status);
       setdescription(todo.description);
-      setdueDate(todo.dueDate);
+      setdueDate(todo.due_date);
       console.log(taskId)
     } else {
       setTitle('');
@@ -61,6 +67,46 @@ function TodModel({ type, setOpen, todo, taskId }) {
       setdueDate('');
     }
   }, [type, todo, setOpen]);
+
+
+
+//   const getTasks = async () => {
+//     setLoad(true);
+//     console.log('getting data');
+//     let responce;
+//     if (localStorage.getItem('filter')) {
+//       console.log(localStorage.getItem('filter'));
+
+//       if (localStorage.getItem('filter') === 'all') {
+//         console.log('alllss');
+
+//         responce = await fetch(
+//           `https://tasks-app-backend-5lk0.onrender.com/tasks?user_id=${localStorage.getItem(
+//             'userId'
+//           )}`
+//         );
+//       }
+//       console.log(localStorage.getItem('filter'));
+//       responce = await fetch(
+//         `https://tasks-app-backend-5lk0.onrender.com/tasks?user_id=${localStorage.getItem(
+//           'userId'
+//         )}&${localStorage.getItem('filter')}=true`
+//       );
+//     } else {
+//       console.log('normal');
+//       responce = await fetch(
+//         `https://tasks-app-backend-5lk0.onrender.com/tasks?user_id=${localStorage.getItem(
+//           'userId'
+//         )}`
+//       );
+//     }
+
+//     const result = await responce.json();
+
+//     console.log(result.data);
+//     setLoad(false);
+//   };
+
 
   const handleSubmit = (e) => {
     //     console.log(
@@ -142,7 +188,9 @@ function TodModel({ type, setOpen, todo, taskId }) {
         due_date: dueDate
       })
       .then((res) => {
+        count += 1
         setLoader(false);
+        localStorage.setItem(`dueDate${count}`,[])
         location.reload()
         setOpen(false);
         console.log(res);
@@ -233,12 +281,11 @@ function TodModel({ type, setOpen, todo, taskId }) {
             <label htmlFor="description">
               Due Date
               <input
-                type="date"
-                id="dueDate"
-                placeholder="In minutes"
+                type={type === 'update' ? 'text' : 'date'}
+                id="dueDate"               
                 value={dueDate}
                 onChange={(e) =>
-                  type === 'update' ? setdueDate(e.target.value) : setdueDate(e.target.value)
+                  type === 'update' ? {} : setdueDate(e.target.value)
                 }
               />
             </label>
@@ -253,7 +300,7 @@ function TodModel({ type, setOpen, todo, taskId }) {
               >
                 <option value="to-do">to-do</option>
                 <option value="in progress">in progress</option>
-                <option value="complete">Complete</option>
+                <option value="Complete">Complete</option>
               </select>
             </label>
             <div className={style.buttonContainer}>

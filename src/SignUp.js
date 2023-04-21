@@ -12,8 +12,48 @@ import Button from './components/Button';
 
 const Home = () => {    
     const [load, setLoad] = useState(false)
+    const [Prompt, setPrompt] = useState(false)
+    const [Msg, setMsg] = useState('')
+
     const navigate = useNavigate()
     const ref = useRef()
+    const Login = async () => {
+        setLoad(true)
+        console.log('dsaad')
+        // try {
+        //         const res = await axios.post('https://tasks-app-backend-5lk0.onrender.com//signup', {
+        //             email:ref.current.value,
+        //         });
+        //         console.log(res)
+
+        // }catch {
+        //     (error) => {
+        //         console.log(error)
+        //     }
+        //     console.log('sda')
+        // }
+        console.log(ref.current.value)
+        
+        await axios.post('https://tasks-app-backend-5lk0.onrender.com/signup', {
+            email:ref.current.value,
+           
+         }).then((resp)=> {
+            console.log(resp)
+            if(resp.data.message === 'This user does not exist, would you like to create an account with this email?'){
+                setMsg(resp.data.message)
+                setPrompt(true)
+            }
+            setLoad(false)            
+            localStorage.setItem('userId', resp.data.user.user_id)
+            navigate('/todo-tracker')
+         }).catch((err)=> {
+            console.log(err)
+         })
+
+         
+    }
+
+
     const signUp = async () => {
         setLoad(true)
         console.log('dsaad')
@@ -67,8 +107,17 @@ return(
 				/>
 			</label>
 
-			<Button variants='primary' type='submit' onClick={signUp}>
+            {Prompt ? <div>{Msg}</div> : '' }
+
+			{
+                Prompt ? <Button variants='primary' type='submit' onClick={signUp}>
+				{load ?<BeatLoader color="#fff" size={10} /> : ' Yes '}</Button>
+                : <Button variants='primary' type='submit' onClick={Login}>
 				{load ?<BeatLoader color="#fff" size={10} /> : ' Login'}</Button>
+
+
+            }
+
 
               
 		</div>
