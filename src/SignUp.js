@@ -31,12 +31,12 @@ const Home = () => {
         // }
         console.log(ref.current.value)
         
-        await axios.post('https://tasks-app-backend-5lk0.onrender.com//signup', {
+        await axios.post('https://tasks-app-backend-5lk0.onrender.com/signup', {
             email:ref.current.value,
             confirm_signup:true
          }).then((resp)=> {
-            setLoad(false)
-            console.log(resp)
+            setLoad(false)            
+            localStorage.setItem('userId', resp.data.user.user_id)
             navigate('/todo-tracker')
          }).catch((err)=> {
             console.log(err)

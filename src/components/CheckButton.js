@@ -41,7 +41,9 @@ function CheckButton({ checked, handleChecked }) {
   return (
     <motion.div
       className={style.svgBox}
-      onClick={handleChecked}
+      onClick={() => {
+        console.log('jkjkj');
+      }}
       tabIndex={0}
       onKeyDown={handleChecked}
       role="button"

@@ -1,5 +1,9 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-restricted-globals */
 import { format } from 'date-fns';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-hot-toast';
@@ -22,7 +26,7 @@ const child = {
   },
 };
 
-function TodoItem({ todo }) {
+function TodoItem({ todo, setload, load }) {
   const [isOpened, setIsOpened] = useState(false);
   const [checked, setChecked] = useState(false);
   const dispatch = useDispatch();
@@ -35,33 +39,41 @@ function TodoItem({ todo }) {
     }
   }, [todo.status]);
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     dispatch(deleteTodo(todo.id));
-    toast.success('Tast Deleted Succesfully');
+    console.log(todo.id);
+    try {
+      await axios.delete(
+        'https://tasks-app-backend-5lk0.onrender.com/tasks/delete',
+        {
+          data: { task_ids: [todo.id] },
+        }
+      );
+      console.log('delete');
+      toast.success('Tast Deleted Succesfully');
+      location.reload();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleUpdate = () => {
     setIsOpened(true);
+    console.log(todo.id);
   };
 
   const handleChecked = () => {
     setChecked(!checked);
-    dispatch(
-      UpdateTodo({
-        ...todo,
-        status: checked ? 'incomplete' : 'complete',
-      })
-    );
+    console.log(checked);
+    checked !== true
+      ? (todo.status = 'incomplete')
+      : (todo.status = 'complete');
   };
+
   return (
     <>
       <motion.div className={style.item} variants={child}>
         <div className={style.todoDetails}>
-          <CheckButton
-            todo={todo}
-            checked={checked}
-            handleChecked={handleChecked}
-          />
           <div className={style.text}>
             <p
               className={getClasses([
@@ -81,7 +93,8 @@ function TodoItem({ todo }) {
             </p>
 
             <p className={style.time}>
-              {format(new Date(todo.dueDate), 'p, MM/dd, yyyy')}
+              {/* {format(new Date(todo.due_date), 'p, MM/dd, yyyy')} */}
+              {todo.due_date}
             </p>
           </div>
         </div>
@@ -90,7 +103,7 @@ function TodoItem({ todo }) {
             className={style.icon}
             onClick={handleDelete}
             tabIndex={0}
-            onKeyDown={handleDelete}
+            // onKeyDown={handleDelete}
             role="button"
           >
             <MdDelete />
@@ -98,7 +111,6 @@ function TodoItem({ todo }) {
           <div
             className={style.icon}
             onClick={handleUpdate}
-            onKeyDown={handleUpdate}
             tabIndex={0}
             role="button"
           >
@@ -111,7 +123,10 @@ function TodoItem({ todo }) {
           type="update"
           todo={todo}
           open={isOpened}
+          taskId={todo.id}
           setOpen={setIsOpened}
+          setload={setload}
+          load={load}
         />
       ) : (
         ' '
