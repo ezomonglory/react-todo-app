@@ -54,7 +54,7 @@ function AppHeader() {
         <option value="all">ALL</option>
         <option value="title">Title</option>
         <option value="status">Status</option>
-        <option value="due-date">Due-Date</option>
+        <option value="due_date">Due-Date</option>
       </SelectButton>
       {isOpened ? (
         <TodModel type="add" open={isOpened} setOpen={setIsOpened} />
