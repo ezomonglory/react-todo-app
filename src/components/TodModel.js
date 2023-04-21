@@ -50,15 +50,33 @@ function TodModel({ type, setOpen, todo, taskId }) {
 
   let count;
 
+  const getDate = () => {
+    // setdueDate(`2022-04-12`)
+    // console.log(`${dueDate  }qwe`)
+    console.log(todo.due_date.split('-'));
+    const datArr = todo.due_date.split('-')
+    const jointArr = [datArr[2], datArr[0], datArr[1]]
+    console.log(jointArr.join('-'))  
+    const d = jointArr.join('-')
+    console.log(`${d  }ll`)
+    setdueDate(d)
+  }
 
+
+
+  useEffect(()=>{
+    if(type === 'update'){
+        setTimeout(() => {
+            getDate();
+          }, 1000);
+    }
+  }, [])
+  
   useEffect(() => {
-    if (type === 'update' && todo) {
-       
-        console.log(todo.status, todo.due_date)
+    if (type === 'update' && todo) {                            
       setTitle(todo.title);
       setStatus(todo.status);
-      setdescription(todo.description);
-      setdueDate(todo.due_date);
+      setdescription(todo.description);          
       console.log(taskId)
     } else {
       setTitle('');
@@ -67,6 +85,8 @@ function TodModel({ type, setOpen, todo, taskId }) {
       setdueDate('');
     }
   }, [type, todo, setOpen]);
+
+  
 
 
 
@@ -202,6 +222,8 @@ function TodModel({ type, setOpen, todo, taskId }) {
     }
 
     if (type === 'update'){
+              
+        
         await axios
       .post('https://tasks-app-backend-5lk0.onrender.com/tasks/save', {
         task_id: taskId,
@@ -281,11 +303,11 @@ function TodModel({ type, setOpen, todo, taskId }) {
             <label htmlFor="description">
               Due Date
               <input
-                type={type === 'update' ? 'text' : 'date'}
+                type={type === 'update' ? 'date' : 'date'}
                 id="dueDate"               
-                value={dueDate}
+                value= {dueDate}
                 onChange={(e) =>
-                  type === 'update' ? {} : setdueDate(e.target.value)
+                  type ===  setdueDate(e.target.value)
                 }
               />
             </label>
