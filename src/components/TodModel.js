@@ -38,12 +38,12 @@ const dropin = {
 };
 
 function TodModel({ type, setOpen, todo, taskId }) {
-    const navigate = useNavigate()
+    
     const [loader, setLoader] = useState(false)
-    const [Tod, setTod] = useState()
+    
   const [title, setTitle] = useState('');
   const [description, setdescription] = useState('');
-  const [status, setStatus] = useState('incomplete');
+  const [status, setStatus] = useState('to-do');
   const [dueDate, setdueDate] = useState('');
   const dispatch = useDispatch();
 
@@ -56,7 +56,7 @@ function TodModel({ type, setOpen, todo, taskId }) {
       console.log(taskId)
     } else {
       setTitle('');
-      setStatus('incomplete');
+      setStatus('to-do');
       setdescription('');
       setdueDate('');
     }
@@ -132,6 +132,7 @@ function TodModel({ type, setOpen, todo, taskId }) {
     );
     
     if (type === 'add'){
+        console.log(status)
         await axios
       .post('https://tasks-app-backend-5lk0.onrender.com/tasks/save', {
         user_id: JSON.parse(localStorage.getItem('userId')),
@@ -237,7 +238,7 @@ function TodModel({ type, setOpen, todo, taskId }) {
                 placeholder="In minutes"
                 value={dueDate}
                 onChange={(e) =>
-                  type === 'update' ? {} : setdueDate(e.target.value)
+                  type === 'update' ? setdueDate(e.target.value) : setdueDate(e.target.value)
                 }
               />
             </label>

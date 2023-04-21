@@ -7,6 +7,7 @@ import axios from 'axios';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-hot-toast';
+import { BeatLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import style from '../styles/modules/todoItem.module.scss';
 import { getClasses } from '../utils/getClasses';
@@ -28,6 +29,7 @@ const child = {
 
 function TodoItem({ todo, setload, load }) {
   const [isOpened, setIsOpened] = useState(false);
+  const [loader, setloader] = useState(false);
   const [checked, setChecked] = useState(false);
   const dispatch = useDispatch();
 
@@ -40,6 +42,7 @@ function TodoItem({ todo, setload, load }) {
   }, [todo.status]);
 
   const handleDelete = async () => {
+    setloader(true);
     dispatch(deleteTodo(todo.id));
     console.log(todo.id);
     try {
@@ -72,52 +75,74 @@ function TodoItem({ todo, setload, load }) {
 
   return (
     <>
-      <motion.div className={style.item} variants={child}>
-        <div className={style.todoDetails}>
-          <div className={style.text}>
-            <p
-              className={getClasses([
-                style.todoText,
-                todo.status === 'complete' && style['todoText--completed'],
-              ])}
-            >
-              {todo.title}
-            </p>
-            <p
-              className={getClasses([
-                style.description,
-                todo.status === 'complete' && style['todoText--completed'],
-              ])}
-            >
-              {todo.description}
-            </p>
+      {loader ? (
+        <div
+          className={style.item}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <BeatLoader color="#3641d6" size={10} />
+        </div>
+      ) : (
+        <motion.div className={style.item} variants={child}>
+          <div className={style.todoDetails}>
+            <div className={style.text}>
+              <p
+                className={getClasses([
+                  style.todoText,
+                  todo.status === 'complete' && style['todoText--completed'],
+                ])}
+              >
+                {todo.title}
+              </p>
+              <p
+                className={getClasses([
+                  style.description,
+                  todo.status === 'complete' && style['todoText--completed'],
+                ])}
+              >
+                {todo.description}
+              </p>
 
-            <p className={style.time}>
-              {/* {format(new Date(todo.due_date), 'p, MM/dd, yyyy')} */}
-              {todo.due_date}
-            </p>
+              <p
+                className={getClasses([
+                  style.status,
+                  todo.status === 'complete' && style['todoText--completed'],
+                ])}
+              >
+                {todo.status}
+              </p>
+
+              <p className={style.time}>
+                {/* {format(new Date(todo.due_date), 'p, MM/dd, yyyy')} */}
+                {todo.due_date}
+              </p>
+            </div>
           </div>
-        </div>
-        <div className={style.todoActions}>
-          <div
-            className={style.icon}
-            onClick={handleDelete}
-            tabIndex={0}
-            // onKeyDown={handleDelete}
-            role="button"
-          >
-            <MdDelete />
+          <div className={style.todoActions}>
+            <div
+              className={style.icon}
+              onClick={handleDelete}
+              tabIndex={0}
+              // onKeyDown={handleDelete}
+              role="button"
+            >
+              <MdDelete />
+            </div>
+            <div
+              className={style.icon}
+              onClick={handleUpdate}
+              tabIndex={0}
+              role="button"
+            >
+              <MdEdit />
+            </div>
           </div>
-          <div
-            className={style.icon}
-            onClick={handleUpdate}
-            tabIndex={0}
-            role="button"
-          >
-            <MdEdit />
-          </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      )}
       {isOpened ? (
         <TodModel
           type="update"

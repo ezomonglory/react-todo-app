@@ -97,3 +97,16 @@
 		opacity: 0.7;
 	}
 }
+
+
+.status{
+    color: rgb(136, 136, 136);
+    word-break: break-all;
+	font-weight: 500;
+	font-size: .8rem;	
+
+	&--completed {
+		text-decoration: line-through;
+		opacity: 0.7;
+	}
+}

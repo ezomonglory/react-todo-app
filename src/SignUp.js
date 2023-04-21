@@ -70,11 +70,7 @@ return(
 			<Button variants='primary' type='submit' onClick={signUp}>
 				{load ?<BeatLoader color="#fff" size={10} /> : ' Login'}</Button>
 
-                    {/* This part wont be in the main code i only did it cause theres an error in the API */}
-                    <br/>
-                <h1>Click here to go to next page</h1>
-                    <br/>
-                <Link to="/todo-tracker">Click</Link>
+              
 		</div>
 	</div>
 )};
